@@ -27,4 +27,20 @@ public class ModelStore extends Store<Model>  {
         int id = (int) (todo.id - 1);
         apply(model -> model.todos[id].completed = !todo.completed);
     }
+
+    public void addTodo(int tabIndex, String todoMassege){
+        apply(model -> {
+            Todo[] todos = new Todo[model.todos.length + 1];
+
+            for(int i = 1; i < model.todos.length + 1; i++){
+                todos[i] = model.todos[i - 1];
+                todos[i].id++;
+            }
+
+            todos[0] = new Todo(1L, 1L, todoMassege, false);
+
+            model.todos = todos;
+            model.uiState.selectedTab = tabIndex;
+        });
+    }
 }

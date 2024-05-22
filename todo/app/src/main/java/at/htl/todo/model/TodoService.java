@@ -32,5 +32,9 @@ public class TodoService {
                     Log.e(TAG, "Error loading todos", e);
                     return null;
                 });
+        /*Todo[] tds = new Todo[2];
+        tds[0] = new Todo(1L, 1L, "test todo 1", false);
+        tds[1] = new Todo(1L, 2L, "test todo 2", true);
+        store.setTodos(tds);*/
     }
 }

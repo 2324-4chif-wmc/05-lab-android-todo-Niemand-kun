@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import at.htl.todo.model.Model
 import at.htl.todo.model.ModelStore
-import at.htl.todo.model.TodoService
 
 @Composable
 fun TabScreen(model: Model, store: ModelStore?) {

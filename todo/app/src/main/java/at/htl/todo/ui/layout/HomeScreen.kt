@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import at.htl.todo.model.Model
 import at.htl.todo.model.ModelStore
-import at.htl.todo.model.TodoService
 
 @Composable
 fun HomeScreen(model: Model, store: ModelStore?) {
@@ -65,10 +64,9 @@ fun HomeScreen(model: Model, store: ModelStore?) {
                 label = { Text("New To-Do") },
                 modifier = Modifier.fillMaxWidth()
             )
-
             Button(
                 onClick = {
-                    store?.selectTab(1);
+                    store?.addTodo(1, newTodoText);
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
