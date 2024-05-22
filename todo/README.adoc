@@ -1,0 +1,133 @@
+= Übung - Android mit RxJava3
+Thomas Stütz
+1.0.0, {docdate}
+:imagesdir: img
+:icons: font
+:sectnums:    // Nummerierung der Überschriften / section numbering
+// :toc:
+// :toclevels: 1
+:experimental:
+//https://gist.github.com/dcode/0cfbf2699a1fe9b46ff04c41721dda74?permalink_comment_id=3948218
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+image::https://img.shields.io/badge/version-1.0.0-blue[]
+
+
+== Dokumentation
+
+Jonas Schönbaß
+
+* Aufgabenstellung 1 habe ich gemäß den Vorgaben ausgearbeitet und zusätzlich eine funktionierende To-Do-Ansicht implementiert. Diese aktualisiert sich, sobald auf die Checkbox geklickt wird. Zudem habe ich eine Funktion eingebaut, die es ermöglicht, zwischen der Startseite und der To-Do-Seite zu wechseln, wie wir es im letzten Unterricht besprochen haben. Auf der Startseite werden standardmäßig Daten angezeigt, wie zum Beispiel die Anzahl der geladenen To-Dos (die To-Dos werden beim Start des Programms eingelesen). Darüber hinaus habe ich eine zusätzliche Anzeige hinzugefügt, die zeigt, wie viele To-Dos erledigt wurden.
+
+image::structure.png[structure img, 200]
+
+* Bei Aufgabenstellung 2 habe ich, wie bereits erwähnt, auf zwei Seiten gearbeitet und einige Verschönerungen vorgenommen, wie die im Unterricht besprochenen Rows und Columns.
+
+image::homePage.png[homePage img, 300]
+
+image::todoPage.png[todoPage img, 300]
+
+* Um dies alles zu gewährleisten, musste ich einige Änderungen am Modell vornehmen, die ich hier kurz beschreibe:
+
+[source, java]
+----
+    public class Model {
+
+        public static class UIState {
+            public int selectedTab = 0;
+        }
+        public Todo[] todos = new Todo[0];
+        public UIState uiState = new UIState();
+    }
+----
+Ich musste das Modell leicht umbauen, um das Wechseln zwischen mehreren Seiten zu ermöglichen.
+
+[source, java]
+----
+    public void setCheckboxTodo(Todo todo){
+        Log.d("Checkbox done", todo.title);
+        int id = (int) (todo.id - 1);
+        apply(model -> model.todos[id].completed = !todo.completed);
+    }
+----
+
+Im ModelStore wurde eine zusätzliche Funktion implementiert, die das Aktualisieren beim Klick auf eine Checkbox übernimmt.
+
+[source, kotlin]
+----
+    @Singleton
+class MainView {
+    @Inject
+    lateinit var store: ModelStore
+
+    @Inject
+    lateinit var toDoService: TodoService
+
+    @Inject
+    constructor() {
+    }
+
+    fun buildContent(activity: ComponentActivity) {
+        toDoService.getAll();
+        val view = ComposeView(activity)
+
+        view.setContent {
+            val viewModel = store.pipe.observeOn(AndroidSchedulers.mainThread()).subscribeAsState(initial = Model()).value
+            Surface(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                TabScreen(viewModel, store)
+            }
+        }
+        activity.setContentView(view)
+    }
+}
+----
+In MainView gab es dann doch erhebliche Änderungen, da ich die Ansicht auf mehrere Seiten aufgeteilt habe. Jetzt übergebe ich nur noch das ViewModel und den Store an den TabScreen, der die Navigation und die Anzeige der weiteren Seiten übernimmt.
+
+[sidcrete]
+== Dokumentation
+
+* Dokumentieren Sie hier grob Ihre durchgeführten Arbeiten, mit
+
+** Datenmodell
+** Screenshots und
+** textuelle Übersicht über die erledigten Aufgaben.
+** Ev. Links zu den einzelnen Teilen
+
+IMPORTANT: Ziel ist es, dass die von Ihnen geleistete Arbeit auch "gefunden" und korrekt bewertet wird.
+
+== Aufgabe - Erstellen Sie das Basisprojekt
+
+* Erstellen Sie in diesem Repo ein Android-Projekt im Verzeichnis `todo`.
+
+* Verwenden Sie hierzu als Arbeitsanleitung folgendes Tutorial https://htl-leonding-college.github.io/android-reactive-java-todo[Android Lab: Reactive App with Java^]
+
+
+== Aufgabe - Überarbeiten Sie das Frontend
+
+* Erstellen Sie ein eigenes Frontend mit Übersichtsseite und Detailseite.
+** https://developer.android.com/develop/ui/compose/components[Material components in Compose^]
+** https://www.composables.com/[Discover every Jetpack Compose Component in one place^]
+
+* Versuchen Sie bei der Gestaltung die UI-Gestaltungsprinzipien einzuhalten:
+
+** https://maze.co/collections/ux-ui-design/ui-design-principles/[The 6 key principles of UI design^]
+** https://medium.com/@NALSengineering/10-principles-in-ui-design-enhancing-user-experience-through-practical-examples-9d519e91b515[10 Principles in UI Design: Enhancing User Experience through Practical Examples^]
+** https://hackernoon.com/10-essential-mobile-app-ui-design-principles-for-building-outstanding-apps[10 Essential Mobile App UI Design Principles for Building Outstanding Apps^]
+
+== Aufgabe - Android-Projekt mit mehreren Entitäten
+
+* Erstellen Sie ein neues Android-Projekt mit mehreren Entitäten und auch mit DTOs
+
+** REST-Service-Client
+** Business Logik mit RxJava
+** Ausgabe der Daten auf UI (Jetpack Compose)
+
+* Verwenden Sie hierzu ein neues Unterverzeichnis.

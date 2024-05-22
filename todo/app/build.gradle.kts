@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlinAndroidKsp)
+    alias(libs.plugins.hiltAndroid)
 }
 
 android {
@@ -30,21 +32,25 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/NOTICE.md"
         }
     }
 }
@@ -66,4 +72,24 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // RxJava
+    implementation (libs.rxjava)
+    implementation(libs.rxandroid)
+    implementation(libs.androidx.runtime.rxjava3)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    // Jackson
+    implementation(libs.jackson.databind)
+
+    // Resteasy
+    implementation(libs.resteasy.client)
+
+    // SmallRye Config
+    //implementation("org.eclipse.microprofile.config:microprofile-config-api:3.1") // for application.properties config loader
+    implementation(libs.smallrye.config)
+
 }
