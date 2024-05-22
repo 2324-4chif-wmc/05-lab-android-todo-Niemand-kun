@@ -22,6 +22,10 @@ public class ModelStore extends Store<Model>  {
         apply(model -> model.uiState.selectedTab = tabIndex);
     }
 
+    public void selectedTodo(Todo todo){
+        apply(model -> model.uiState.detailTodo = todo);
+    }
+
     public void setCheckboxTodo(Todo todo){
         Log.d("Checkbox done", todo.title);
         int id = (int) (todo.id - 1);
