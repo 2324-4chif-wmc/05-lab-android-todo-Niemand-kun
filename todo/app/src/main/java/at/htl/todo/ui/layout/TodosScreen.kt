@@ -34,19 +34,19 @@ import javax.inject.Singleton
 @Composable
 fun TodosScreen(model: Model, store: ModelStore?, modifier: Modifier = Modifier) {
     val todos = model.todos;
-    val detailTodo = model.uiState.detailTodo
+    val detailTodoId = model.uiState.detailTodoId
 
     LazyColumn(
         modifier = modifier.padding(16.dp)
     ) {
-        if(detailTodo == null) {
+        if(detailTodoId == -1L) {
         items(todos.size) { index ->
                 TodoRow(todo  = todos[index], store = store)
                 HorizontalDivider()
         }
         }else{
             item{
-                ShowDetail(model.uiState.detailTodo, store = store)
+                todos.find { it.id == detailTodoId }?.let { ShowDetail(todo = it, store = store) }
             }
         }
     }
@@ -83,7 +83,7 @@ fun TodoRow(todo: Todo, store: ModelStore?) {
     ) {
         Button(
             onClick = {
-                store?.selectedTodo(todo)
+                store?.selectTodoId(todo.id)
             },
         ) {
             Text("Details")
@@ -142,7 +142,7 @@ fun ShowDetail(todo : Todo, store: ModelStore?){
     ) {
         Button(
             onClick = {
-                store?.selectedTodo(null)
+                store?.selectTodoId(-1L)
             },
         ) {
             Text("Back")

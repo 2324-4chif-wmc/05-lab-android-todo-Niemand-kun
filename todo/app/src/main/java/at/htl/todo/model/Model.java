@@ -6,7 +6,7 @@ public class Model {
 
     public static class UIState {
         public int selectedTab = 0;
-        public Todo detailTodo = null;
+        public Long detailTodoId = -1L;
     }
     public Todo[] todos = new Todo[0];
     public UIState uiState = new UIState();

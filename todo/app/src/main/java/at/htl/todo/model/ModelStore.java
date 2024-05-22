@@ -22,8 +22,8 @@ public class ModelStore extends Store<Model>  {
         apply(model -> model.uiState.selectedTab = tabIndex);
     }
 
-    public void selectedTodo(Todo todo){
-        apply(model -> model.uiState.detailTodo = todo);
+    public void selectTodoId(Long todoId){
+        apply(model -> model.uiState.detailTodoId = todoId);
     }
 
     public void setCheckboxTodo(Todo todo){
