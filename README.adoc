@@ -21,6 +21,12 @@ image::https://img.shields.io/badge/version-1.0.0-blue[]
 [sidcrete]
 == Dokumentation
 
+Zuerst einmal habe ich die Übung "1. Aufgabe" durchgearbeitet und in das Android Projekt eingebaut, danach wurden alle Todos geladen und korrekt angezeigt. 
+
+image::image.png[first view]
+
+---
+
 * Dokumentieren Sie hier grob Ihre durchgeführten Arbeiten, mit
 
 ** Datenmodell
