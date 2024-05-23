@@ -32,11 +32,36 @@ public class ModelStore extends Store<Model>  {
         apply(model -> model.uiState.isEditing = !model.uiState.isEditing);
     }
 
+    public void switchEditingDescription(Long id){
+        apply(model -> {
+            model.uiState.isEditingDescription = !model.uiState.isEditingDescription;
+            for(int i = 0; i < model.todos.length; i++){
+                if(Objects.equals(model.todos[i].id, id)){
+                    if(Objects.equals(model.todos[i].description, Todo.GetDefaultDescription())){
+                        model.todos[i].description = "";
+                    }else if(Objects.equals(model.todos[i].description, "")){
+                        model.todos[i].description = Todo.GetDefaultDescription();
+                    }
+                }
+            }
+        });
+    }
+
     public void setNewTitle(String title, Long id){
         apply(model -> {
             for(int i = 0; i < model.todos.length; i++){
                 if(Objects.equals(model.todos[i].id, id)){
                     model.todos[i].title = title;
+                }
+            }
+        });
+    }
+
+    public void setNewDescription(String description, Long id){
+        apply(model -> {
+            for(int i = 0; i < model.todos.length; i++){
+                if(Objects.equals(model.todos[i].id, id)){
+                    model.todos[i].description = description;
                 }
             }
         });

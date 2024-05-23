@@ -8,6 +8,7 @@ public class Model {
         public int selectedTab = 0;
         public Long detailTodoId = -1L;
         public boolean isEditing = false;
+        public boolean isEditingDescription = false;
     }
     public Todo[] todos = new Todo[0];
     public UIState uiState = new UIState();

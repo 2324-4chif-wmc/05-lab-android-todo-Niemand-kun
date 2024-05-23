@@ -55,39 +55,27 @@ fun TodosScreen(model: Model, store: ModelStore?, modifier: Modifier = Modifier)
 
 @Composable
 fun TodoRow(todo: Todo, store: ModelStore?) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = todo.title,
-            style = MaterialTheme.typography.bodySmall
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = todo.id.toString(),
-            style = MaterialTheme.typography.bodySmall
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Checkbox(
-            checked = todo.completed,
-            onCheckedChange = { store?.setCheckboxTodo(todo) }
-        )
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Button(
-            onClick = {
-                store?.selectTodoId(todo.id)
-            },
+    Surface (onClick = {store?.selectTodoId(todo.id)}) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Details")
+            Text(
+                text = todo.title,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = todo.id.toString(),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Checkbox(
+                checked = todo.completed,
+                onCheckedChange = { store?.setCheckboxTodo(todo) }
+            )
         }
     }
 }
@@ -181,4 +169,6 @@ fun ShowDetail(todo : Todo, store: ModelStore?, model: Model){
             Text(if(todo.completed){"Undo"}else{"Complete"})
         }
     }
+
+    DisplayDescription(todo, store, model)
 }
