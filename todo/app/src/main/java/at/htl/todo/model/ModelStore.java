@@ -67,6 +67,24 @@ public class ModelStore extends Store<Model>  {
         });
     }
 
+    public void deleteTodo(Long id){
+        apply(model -> {
+            Todo[] newTodoList = new Todo[model.todos.length - 1];
+            int count = 0;
+
+            for(int i = 0; i < model.todos.length; i++){
+                if(Objects.equals(model.todos[i].id, id)){
+                    continue;
+                }
+                newTodoList[count++] = model.todos[i];
+                newTodoList[count - 1].id = (long) count;
+            }
+
+            model.todos = newTodoList;
+            model.uiState.detailTodoId = -1L;
+        });
+    }
+
     public void setCheckboxTodo(Todo todo){
         Log.d("Checkbox done", todo.title);
         int id = (int) (todo.id - 1);
