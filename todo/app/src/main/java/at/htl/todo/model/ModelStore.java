@@ -2,6 +2,8 @@ package at.htl.todo.model;
 
 import android.util.Log;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import at.htl.todo.util.store.Store;
@@ -24,6 +26,20 @@ public class ModelStore extends Store<Model>  {
 
     public void selectTodoId(Long todoId){
         apply(model -> model.uiState.detailTodoId = todoId);
+    }
+
+    public void switchEditing(){
+        apply(model -> model.uiState.isEditing = !model.uiState.isEditing);
+    }
+
+    public void setNewTitle(String title, Long id){
+        apply(model -> {
+            for(int i = 0; i < model.todos.length; i++){
+                if(Objects.equals(model.todos[i].id, id)){
+                    model.todos[i].title = title;
+                }
+            }
+        });
     }
 
     public void setCheckboxTodo(Todo todo){

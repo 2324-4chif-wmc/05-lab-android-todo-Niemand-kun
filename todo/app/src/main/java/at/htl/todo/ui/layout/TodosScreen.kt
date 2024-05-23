@@ -17,6 +17,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Alignment
@@ -46,7 +47,7 @@ fun TodosScreen(model: Model, store: ModelStore?, modifier: Modifier = Modifier)
         }
         }else{
             item{
-                todos.find { it.id == detailTodoId }?.let { ShowDetail(todo = it, store = store) }
+                todos.find { it.id == detailTodoId }?.let { ShowDetail(todo = it, store = store, model = model) }
             }
         }
     }
@@ -92,17 +93,41 @@ fun TodoRow(todo: Todo, store: ModelStore?) {
 }
 
 @Composable
-fun ShowDetail(todo : Todo, store: ModelStore?){
+fun ShowDetail(todo : Todo, store: ModelStore?, model: Model){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "Todo: ${todo.title}",
-            style = MaterialTheme.typography.headlineSmall
-        )
+        if(model.uiState.isEditing){
+            TextField(
+                value = todo.title,
+                onValueChange = { store?.setNewTitle(it, todo.id) },
+                textStyle = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }else{
+            Text(
+                text = "Todo: ${todo.title}",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        }
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(
+            onClick = {
+                store?.switchEditing();
+            },
+        ) {
+            Text(if(model.uiState.isEditing){"save"}else{"edit"})
+        }
     }
 
     Row(
